@@ -1,8 +1,8 @@
 OCAML_LIBS    = ../fhs ../util/version ../idl/ocaml_backend/common ../idl/ocaml_backend/client
 OCAMLINCLUDES = ../idl/ocaml_backend ../xapi ../idl ../autogen ../client_records ..
-OCAMLPACKS    = xml-light2 stdext stunnel http-svr xcp rpclib uuid
+OCAMLPACKS    = xml-light2 stdext stunnel http-svr xcp rpclib uuid xcp-inventory
 
-PERFTEST_FILES = scenario perfutil createVM createpool testtypes perftest tests ../xapi/xapi_inventory perfdebug 
+PERFTEST_FILES = scenario perfutil createVM createpool testtypes perftest tests perfdebug 
 OCamlProgram(perftest, $(PERFTEST_FILES))
 OCamlDocProgram(perftest, $(PERFTEST_FILES))
 OCamlProgram(apiperf, perfutil apiperf ../fhs)

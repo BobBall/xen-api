@@ -317,9 +317,9 @@ let init_local_database () =
 
 let bring_up_management_if ~__context () =
 	try
-		let management_if = Xapi_inventory.lookup Xapi_inventory._management_interface in
+		let management_if = Inventory.lookup Inventory._management_interface in
 		let management_address_type = Record_util.primary_address_type_of_string
-			(Xapi_inventory.lookup Xapi_inventory._management_address_type) in
+			(Inventory.lookup Inventory._management_address_type) in
 		if management_if = "" then begin
 			debug "No management interface defined (management is disabled)";
 			Xapi_mgmt_iface.run ~__context ~mgmt_enabled:false;
@@ -489,7 +489,7 @@ let resynchronise_ha_state () =
 			(fun __context ->
 				(* Make sure the control domain is marked as "running" - in the case of *)
 				(* HA failover it will have been marked as "halted". *)
-				let control_domain_uuid = Util_inventory.lookup Util_inventory._control_domain_uuid in
+				let control_domain_uuid = Inventory.lookup Inventory._control_domain_uuid in
 				let control_domain = Db.VM.get_by_uuid ~__context ~uuid:control_domain_uuid in
 				Db.VM.set_power_state ~__context ~self:control_domain ~value:`Running;
 
@@ -794,7 +794,7 @@ let server_init() =
     "Reading config file", [], (fun () -> Xapi_config.read_config !Xapi_globs.config_file);
     "Reading external global variables definition", [ Startup.NoExnRaising ], Xapi_globs.read_external_config;
     "XAPI SERVER STARTING", [], print_server_starting_message;
-    "Parsing inventory file", [], Xapi_inventory.read_inventory;
+    "Parsing inventory file", [], Inventory.read_inventory;
     "Initialising local database", [], init_local_database;
 	"Loading DHCP leases", [], Xapi_udhcpd.init;
     "Reading pool secret", [], Helpers.get_pool_secret;
@@ -932,7 +932,7 @@ let server_init() =
     );
 						    
     let wait_management_interface () =
-      let management_if = Xapi_inventory.lookup Xapi_inventory._management_interface in
+      let management_if = Inventory.lookup Inventory._management_interface in
       if management_if <> "" then (
 	debug "Waiting forever for the management interface to gain an IP address";
 	let ip = wait_for_management_ip_address ~__context in
